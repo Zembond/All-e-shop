@@ -1,0 +1,55 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/wrap.html" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment = "admin_content">
+    <div class="justify-content-between">
+        <h2 th:text="#{label.roles}"></h2>
+        <button type="button" class="btn btn-info mt-3" data-toggle="modal" data-target="#addRole" th:text="#{button.addRole}" sec:authorize="hasRole('ROLE_ADMIN')">
+        </button>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th th:text="#{label.name}"></th>
+                        <th th:text="#{label.description}"></th>
+                        <th th:text="#{label.details}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "role : ${admin_roles}">
+                        <td th:text="${role.id}"></td>
+                        <td th:text="${role.name}"></td>
+                        <td th:text="${role.description}"></td>
+                        <td><a class="btn btn-sm" style="background-color: #343a40; color: #fff;" th:href="@{'/roledetails/' + ${role.id}}" th:text="#{label.details}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addRole" tabindex="-1" aria-labelledby="addRole" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemLabel">New role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{'/addrole'}" class="w-100" method="post">
+                        <p style="width: 100%;" th:text="#{label.name}"> </p>
+                        <div class="form-group w-100"><input type="text" name="role_name"></div>
+                        <p style=" width: 100%;" th:text="#{label.description}"></p>
+                        <div class="form-group w-100"> <textarea name="role_description" class="form-control"></textarea></div>
+                        <button type="submit" class="btn btn-success float-right" th:text="#{button.addRole}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

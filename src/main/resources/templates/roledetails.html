@@ -1,0 +1,24 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/wrap.html">
+<div layout:fragment = "admin_content">
+    <div class="justify-content-between">
+        <h2 th:text="${role.name}"></h2>
+        <div class="row mt-4">
+            <div class="col-md-9">
+                <form th:action="@{'/editrole'}" method="post">
+                    <input type="hidden" name="edit_role_id" th:value="${role.id}">
+                    <div class="form-group">
+                        <label th:text="#{label.name}"></label>
+                        <input type="text" class="form-control" name="edit_role_name" th:value="${role.name}">
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.description}"></label>
+                        <textarea name="edit_role_description" class="form-control" th:text="${role.description}"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success float-right" th:text="#{label.edit}"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

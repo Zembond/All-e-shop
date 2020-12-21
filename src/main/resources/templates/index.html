@@ -1,0 +1,39 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/main.html">
+    <div layout:fragment = "site_content">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item" th:text="#{label.categories}" style="background-color: #156145; color: #fff;"></li>
+                    <li class="list-group-item"><a th:href="@{'/'}" th:text="#{label.allItems}"></a></li>
+                    <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.phone}"></span>, <span th:text="#{label.gadgets}"></span> </a></li>
+                    <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.tv}"></span>, <span th:text="#{label.audio}"></span>, <span th:text="#{label.video}"></span> </a></li>
+                    <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.for_game}"></a></li>
+                    <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+                </ul>
+                <ul class="list-group mt-3">
+                    <li class="list-group-item" th:text="#{label.brands}" style="background-color: #156145; color: #fff;"></li>
+                    <li class="list-group-item" th:each="b : ${brands}"><a th:href="@{'/search?search_name=&search_brand='+${b.id}+'&price_from=&price_to=&order='}" th:text="${b.name}"></a></li>
+                    <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+                </ul>
+
+            </div>
+            <div class="col-md-9">
+                <img src="https://techshop.com.pt/TechShop-Images/Tech-Shop-Logo.png" class="img-thumbnail mb-4">
+                <div class="row">
+                    <div class="col-md-4" th:each="product : ${items}" th:if="${product.inTopPage}">
+                        <div class="card mt-3">
+                            <img th:src="${product.getSmallPicURL()}" class="card-img-top" width="250" height="250">
+                            <div class="card-body">
+                                <h5 class="card-title"><a th:href="@{'/details/' + ${product.id}}" th:text="${product.getName()}" ></a></h5>
+                                <h5 class="card-title"><span th:text="${product.getPrice()}"></span> KZT</h5>
+                                <p class="card-text" th:text="${product.getDescription()}"></p>
+                                <p class="card-text">Rating <span th:text="${product.getStars()}"></span> stars</p>
+                                <p class="card-text">Brand: <a th:href="@{'/search?search_name=&search_brand='+${product.brand.id}+'&price_from=&price_to=&order='}" th:text="${product.brand.name}"></a>, <span th:text="${product.brand.country.name}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

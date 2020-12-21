@@ -1,0 +1,33 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/main.html" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment = "site_content">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item" th:text="#{label.categories}" style="background-color: #156145; color: #fff;"></li>
+                <li class="list-group-item"><a th:href="@{'/'}" th:text="#{label.allItems}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.phone}"></span>, <span th:text="#{label.gadgets}"></span> </a></li>
+                <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.tv}"></span>, <span th:text="#{label.audio}"></span>, <span th:text="#{label.video}"></span> </a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.for_game}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+            </ul>
+            <ul class="list-group mt-3">
+                <li class="list-group-item" th:text="#{label.brands}" style="background-color: #156145; color: #fff;"></li>
+                <li class="list-group-item" th:each="b : ${brands}"><a th:href="@{'/search?search_name=&search_brand='+${b.id}+'&price_from=&price_to=&order='}" th:text="${b.name}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h3 class="text-center my-3" th:text="#{label.editComment}"></h3>
+
+            <form th:action="@{'/savecomment'}" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="edit_item_id" th:value="${comment.item.id}">
+                    <input type="hidden" name="edit_comment_id" th:value="${comment.id}">
+                    <textarea class="form-control" name="edit_text" th:text="${comment.comment}"></textarea>
+                    <button type="submit" class="btn btn-success mt-3" th:text="#{label.saveComment}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

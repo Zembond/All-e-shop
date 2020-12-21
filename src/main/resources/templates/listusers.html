@@ -1,0 +1,61 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/wrap.html" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment = "admin_content">
+    <div class="justify-content-between">
+        <h2 th:text="#{label.users}"></h2>
+        <button type="button" class="btn btn-info mt-3" data-toggle="modal" data-target="#addUser" th:text="#{button.addUser}" sec:authorize="hasRole('ROLE_ADMIN')">
+        </button>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th th:text="#{label.name}"></th>
+                        <th th:text="#{label.email}"></th>
+                        <th th:text="#{label.full_name}"></th>
+                        <th th:text="#{label.roles}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "user : ${admin_users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.fullName}"></td>
+                        <td th:text="${user.roles}"></td>
+                        <td><a class="btn btn-sm" style="background-color: #343a40; color: #fff;" th:href="@{'/userdetails/' + ${user.email}}" th:text="#{label.details}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="addUser" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemLabel">New User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{'/adduser'}" class="w-100" method="post">
+                        <p style="width: 100%;" th:text="#{label.email}"> </p>
+                        <div class="form-group w-100"><input type="text" name="user_email"></div>
+                        <p style=" width: 100%;" th:text="#{label.password}"></p>
+                        <div class="form-group w-100"><input type="password" name="user_password"></div>
+                        <p style=" width: 100%;" th:text="#{label.re_password}"></p>
+                        <div class="form-group w-100"><input type="password" name="re_user_password"></div>
+                        <p style="width: 100%;" th:text="#{label.full_name}"> </p>
+                        <div class="form-group w-100"><input type="text" name="user_full_name"></div>
+                        <button type="submit" class="btn btn-success float-right" th:text="#{button.addUser}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

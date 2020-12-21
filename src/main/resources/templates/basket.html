@@ -1,0 +1,110 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/main.html">
+<div layout:fragment = "site_content">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item" th:text="#{label.categories}" style="background-color: #156145; color: #fff;"></li>
+                <li class="list-group-item"><a th:href="@{'/'}" th:text="#{label.allItems}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.phone}"></span>, <span th:text="#{label.gadgets}"></span> </a></li>
+                <li class="list-group-item"><a th:href="@{'#'}"> <span th:text="#{label.tv}"></span>, <span th:text="#{label.audio}"></span>, <span th:text="#{label.video}"></span> </a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.for_game}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+            </ul>
+            <ul class="list-group mt-3">
+                <li class="list-group-item" th:text="#{label.brands}" style="background-color: #156145; color: #fff;"></li>
+                <li class="list-group-item" th:each="b : ${brands}"><a th:href="@{'/search?search_name=&search_brand='+${b.id}+'&price_from=&price_to=&order='}" th:text="${b.name}"></a></li>
+                <li class="list-group-item"><a th:href="@{'#'}" th:text="#{label.other}"></a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h3 class="text-center">
+                <span th:if="${cart.equals('empty')}" th:text="#{label.emptyCart}"></span>
+                <span th:unless="${cart.equals('empty')}" th:text="#{label.yourCart}"></span>
+            </h3>
+            <table class="table table-striped" th:unless="${cart.equals('empty')}">
+                <thead>
+                <tr>
+                    <th th:text="#{label.name}"></th>
+                    <th th:text="#{label.amount}"></th>
+                    <th th:text="#{label.price}"></th>
+                    <th th:text="#{label.cost}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="it : ${cart.getBasketItems()}">
+                    <td>
+                        <a th:href="@{'/details/' + ${it.id}}">
+                            <img th:src="${it.getSmallPicURL()}" height="56px" width="56px" >
+                            <span th:text="${it.name}"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge" th:text="${cart.getCount(it)}"></span>
+                        <div class="btn-group">
+                            <form th:action="@{'/deletefrombasket'}" method="post">
+                                <input type="hidden" name="del_item_id" th:value="${it.id}">
+                                <button class="btn btn-danger" type="submit">-</button>
+                            </form>
+                            <form th:action="@{'/addtobasket'}" method="post">
+                                <input type="hidden" th:value="${it.id}" name="item_id">
+                                <button type="submit" class="btn btn-success">+</button>
+                            </form>
+                        </div>
+                    </td>
+                    <td><span th:text="${it.price}"></span> KZT</td>
+                    <td><span th:text="${cart.getItemPrice(it)}"></span> KZT</td>
+                </tr>
+                <tr>
+                    <td th:text="#{label.totalCost}"></td>
+                    <td><span th:text="${cart.getTotalPrice()}"></span> KZT</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-group" role="group" th:unless="${cart.equals('empty')}">
+                <form>
+                    <button type="button" class="btn btn-success mr-3" data-toggle="modal" data-target="#addOrder" th:text="#{label.checkout}">
+                    </button>
+                </form>
+                <form th:action="@{'/clearbasket'}" method="post">
+                    <button type="submit" class="btn btn-danger" th:text="#{label.clear}"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addOrder" tabindex="-1" aria-labelledby="addOrder" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemLabel" th:text="#{label.checkout}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{'/createorder'}" method="post">
+                        <div class="form-group">
+                            <label for="inputFullName" th:text="#{label.full_name}"></label>
+                            <input type="text" class="form-control" id="inputFullName">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCardNumber" th:text="#{label.cardNumber}"></label>
+                            <input type="text" class="form-control" id="inputCardNumber">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputExpiration" th:text="#{label.expiration}"></label>
+                                <input type="text" class="form-control" id="inputExpiration">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputCVV" th:text="#{label.CVV}"></label>
+                                <input type="text" class="form-control" id="inputCVV">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success float-right mt-3" th:text="#{label.checkout}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

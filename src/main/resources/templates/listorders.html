@@ -1,0 +1,27 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/wrap.html" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment = "admin_content">
+    <div class="justify-content-between">
+        <h2 th:text="#{label.orders}"></h2>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th th:text="#{label.soldItems}"></th>
+                        <th th:text="#{label.date}"></th>
+                        <th th:text="#{label.status}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "order : ${admin_orders}">
+                        <td th:text="${order.items}"></td>
+                        <td th:text="${order.orderDate}"></td>
+                        <td th:text="${order.status}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
